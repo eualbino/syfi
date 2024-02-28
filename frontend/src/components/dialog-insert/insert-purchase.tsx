@@ -1,41 +1,86 @@
-import { Button } from "@/components/ui/button"
+"use client";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { usePurchase } from "@/data/purchase-data";
+import { zodResolver } from "@hookform/resolvers/zod";
+import z from "zod";
+import { useForm } from "react-hook-form";
+
+const formInserirSchema = z.object({
+  name: z
+    .string()
+    .min(1, {
+      message: "Insira a receita ou despesa!",
+    })
+    .max(255, {
+      message: "Tem que ser menor que 255 letras!",
+    }),
+});
+
+type FormInserirSchema = z.infer<typeof formInserirSchema>;
 
 export function InsertPurchase() {
+  const { postPurchase } = usePurchase();
+
+  const { handleSubmit, register } = useForm<FormInserirSchema>({
+    resolver: zodResolver(formInserirSchema),
+    defaultValues: {
+      name: "",
+    },
+  });
+
+  async function handleInserirPurchase(data: FormInserirSchema) {
+    await postPurchase(data);
+  }
+
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" className="bg-black text-white dark:bg-white dark:text-black">Inserir</Button>
+        <Button
+          variant="outline"
+          className="bg-black text-white dark:bg-white dark:text-black"
+        >
+          Inserir
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Inserir o produto</DialogTitle>
-          <DialogDescription>
-            Insira o nome do produto que deseja adicionar a lista!
-          </DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input id="name" className="col-span-3 border-2 border-black dark:border-none dark:bg-zinc-800" />
+        <form onSubmit={handleSubmit(handleInserirPurchase)}>
+          <DialogHeader>
+            <DialogTitle>Inserir o produto</DialogTitle>
+            <DialogDescription>
+              Insira o nome do produto que deseja adicionar a lista!
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="name" className="text-right">
+                Name
+              </Label>
+              <Input
+                id="name"
+                className="col-span-3 border-2 border-black dark:border-none dark:bg-zinc-800"
+                {...register("name")}
+              />
+            </div>
           </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Inserir</Button>
-        </DialogFooter>
+          <div className="flex justify-end">
+            <DialogClose asChild>
+              <Button type="submit">Inserir</Button>
+            </DialogClose>
+          </div>
+        </form>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

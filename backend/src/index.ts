@@ -3,11 +3,15 @@ import express from "express";
 
 const prisma = new PrismaClient();
 const app = express();
+const cors = require('cors')
 
+app.use(cors({
+  origin: 'http://localhost:3000'
+}))
 app.use(express.json());
 
 app.get("/listbuys", async (req, res) => {
-  const listBuy = prisma.listBuy.findMany();
+  const listBuy = await prisma.listBuy.findMany();
   res.json(listBuy);
 });
 

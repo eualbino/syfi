@@ -1,19 +1,12 @@
 import * as React from "react";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Check, Pencil, Search, Trash2, X } from "lucide-react";
+import { Search } from "lucide-react";
 import { SetTheme } from "@/components/dropdown-theme/set-theme";
 import { InsertPurchase } from "@/components/dialog-insert/insert-purchase";
+import { TableData } from "@/components/table-data/table-data";
 
 export default function HomePage() {
+  
   return (
     <div>
       <SetTheme />
@@ -28,79 +21,10 @@ export default function HomePage() {
               />
             </div>
             <div>
-              <InsertPurchase/>
+              <InsertPurchase />
             </div>
           </div>
-          <div className="">
-            <Table>
-              <TableHeader>
-                <TableRow className="text-zinc-500 hover:bg-zinc-200 dark:hover:bg-zinc-800">
-                  <TableHead className="pl-5">
-                    <Checkbox />
-                  </TableHead>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Editar / Delete</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody className="font-semibold">
-                <TableRow className="border-b-zinc-500 hover:bg-zinc-200 dark:hover:bg-zinc-800">
-                  <TableCell className="pl-5">
-                    <Checkbox />
-                  </TableCell>
-                  <TableCell className="max-w-60 overflow-hidden overflow-ellipsis whitespace-nowrap">
-                    Sabão em Pó Omo Lavagem Perfeita 800g
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex gap-2">
-                      <Check /> / <X />
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex gap-2">
-                      <Pencil /> / <Trash2 />
-                    </div>
-                  </TableCell>
-                </TableRow>
-                <TableRow className="border-b-zinc-500 hover:bg-zinc-200 dark:hover:bg-zinc-800">
-                  <TableCell className="pl-5">
-                    <Checkbox />
-                  </TableCell>
-                  <TableCell className="max-w-60 overflow-hidden overflow-ellipsis whitespace-nowrap">
-                    Sabão em Pó Omo Lavagem Perfeita 800g
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex gap-2">
-                      <Check /> / <X />
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex gap-2">
-                      <Pencil /> / <Trash2 />
-                    </div>
-                  </TableCell>
-                </TableRow>
-                <TableRow className="border-b-zinc-500 hover:bg-zinc-200 dark:hover:bg-zinc-800">
-                  <TableCell className="pl-5">
-                    <Checkbox />
-                  </TableCell>
-                  <TableCell className="max-w-60 overflow-hidden overflow-ellipsis whitespace-nowrap">
-                    Sabão em Pó Omo Lavagem Perfeita 800g
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex gap-2">
-                      <Check /> / <X />
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex gap-2">
-                      <Pencil /> / <Trash2 />
-                    </div>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </div>
+          <TableData/>
         </div>
       </div>
     </div>
