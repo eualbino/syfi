@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { usePurchase } from "@/data/purchase-data";
 import { Checkbox } from "../ui/checkbox";
 import {
@@ -10,11 +10,49 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Check, Pencil, Trash2, X } from "lucide-react";
+import { useEffect, useState } from "react";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "../ui/pagination";
 
 export function TableData() {
-  const { getPurchase } = usePurchase();
+  const [page, setPage] = useState(1);
+  const [maxPage, setMaxPage] = useState<number | null>(null);
+  const { getPurchase } = usePurchase(page);
+  const total = getPurchase?.totalItems;
+  
+  useEffect(() => {
+    if (total !== undefined) {
+      const maxPages = Math.ceil(total / 10);
+      setMaxPage(maxPages);
+    }
+  }, [total]);
+
+  function handlePreviousPage() {
+    if (page > 1) {
+      setPage(page - 1);
+    } else {
+      return null;
+    }
+  }
+
+  function handleNextPage() {
+    if (maxPage !== null) {
+      if (page < maxPage) {
+        setPage(page + 1);
+      }else{
+        return null
+      }
+    }
+  }
+
   return (
-    <div >
+    <div>
       <Table>
         <TableHeader>
           <TableRow className="text-zinc-500 hover:bg-zinc-200 dark:hover:bg-zinc-800">
@@ -27,7 +65,7 @@ export function TableData() {
           </TableRow>
         </TableHeader>
         <TableBody className="font-semibold">
-          {getPurchase?.map((purchaseData) => {
+          {getPurchase?.listBuy?.map((purchaseData) => {
             return (
               <TableRow
                 className="border-b-zinc-500 hover:bg-zinc-200 dark:hover:bg-zinc-800"
@@ -54,6 +92,24 @@ export function TableData() {
           })}
         </TableBody>
       </Table>
+      <div className="mt-4">
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                isActive={page > 1}
+                onClick={handlePreviousPage}
+              />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink>{page}</PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationNext onClick={handleNextPage} />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </div>
     </div>
   );
 }

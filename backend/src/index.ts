@@ -11,8 +11,20 @@ app.use(cors({
 app.use(express.json());
 
 app.get("/listbuys", async (req, res) => {
-  const listBuy = await prisma.listBuy.findMany();
-  res.json(listBuy);
+  const page = Number(req.query.page) || 1;
+  const pageSize = 10;
+
+  const skip = (page - 1) * pageSize;
+  const take = pageSize;
+
+  const listBuy = await prisma.listBuy.findMany({
+    skip: skip,
+    take: take,
+  });
+
+  const totalItems = await prisma.listBuy.count()
+
+  res.json({listBuy, totalItems});
 });
 
 app.get("/listbuys", async (req, res) => {
