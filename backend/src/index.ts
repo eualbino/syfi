@@ -63,8 +63,8 @@ app.put("/listbuy/:id", async (req, res) => {
   }
 });
 
-const server = app.listen(3000, () =>
+const server = app.listen(8080, () =>
   console.log(`
-🚀 Server ready at: http://localhost:3000
+🚀 Server ready at: http://localhost:8080
 ⭐️ See sample requests: http://pris.ly/e/ts/rest-express#3-using-the-rest-api`)
 );

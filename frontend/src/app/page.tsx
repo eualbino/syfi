@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -11,58 +9,27 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  Check,
-  MoonIcon,
-  Pencil,
-  Search,
-  SunIcon,
-  Trash2,
-  X,
-} from "lucide-react";
-import { useTheme } from "next-themes";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
+import { Check, Pencil, Search, Trash2, X } from "lucide-react";
+import { SetTheme } from "@/components/dropdown-theme/set-theme";
+import { InsertPurchase } from "@/components/dialog-insert/insert-purchase";
 
 export default function HomePage() {
-  const { setTheme } = useTheme();
   return (
     <div>
-      <header className="flex justify-end pr-8 pt-8">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="icon">
-              <SunIcon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <MoonIcon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-              <span className="sr-only">Toggle theme</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => setTheme("light")}>
-              Light
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme("dark")}>
-              Dark
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme("system")}>
-              System
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </header>
+      <SetTheme />
       <div className="flex justify-center items-center h-[70vh] flex-col">
         <div className="min-w-[40%]">
-          <div className="flex items-center justify-start gap-3 py-8 ring-zinc-300">
-            <Search className="w-5 h-4 text-sm absolute ml-2 text-zinc-600" />
-            <Input
-              className=" placeholder:text-zinc-500  dark:border-none dark:bg-zinc-900 border-2 border-black rounded-xl max-w-80 text-sm pl-9"
-              placeholder="Pesquisar..."
-            />
+          <div className="flex justify-between gap-3 py-8 ring-zinc-300 ">
+            <div className="flex items-center">
+              <Search className="w-5 h-4 text-sm absolute ml-2 text-zinc-600" />
+              <Input
+                className=" placeholder:text-zinc-500  dark:border-none dark:bg-zinc-900 border-2 border-black rounded-xl max-w-80 text-sm pl-9"
+                placeholder="Pesquisar..."
+              />
+            </div>
+            <div>
+              <InsertPurchase/>
+            </div>
           </div>
           <div className="">
             <Table>
