@@ -1,5 +1,5 @@
 "use client";
-import { usePurchase } from "@/data/purchase-data";
+import { purchaseGet } from "@/data/purchase-data";
 import { Checkbox } from "../ui/checkbox";
 import {
   Table,
@@ -9,8 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Check, Pencil, Trash2, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Check, Pencil, X } from "lucide-react";
 import {
   Pagination,
   PaginationContent,
@@ -19,13 +18,27 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "../ui/pagination";
+import { DeleteButton } from "../buttons/deleteButton";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
-export function TableData() {
- const [page, setPage] = useState(1);
+export function TableData({
+  page,
+  setPage,
+}: {
+  page: number;
+  setPage: Dispatch<SetStateAction<number>>;
+}) {
   const [maxPage, setMaxPage] = useState<number | null>(null);
-  const { getPurchase } = usePurchase(page);
+
+  const { data: getPurchase } = useQuery({
+    queryKey: ["purchase", page],
+    queryFn: () => purchaseGet(page),
+    refetchOnWindowFocus: false,
+  });
+
   const total = getPurchase?.totalItems;
-  
+
   useEffect(() => {
     if (total !== undefined) {
       const maxPages = Math.ceil(total / 10);
@@ -45,8 +58,8 @@ export function TableData() {
     if (maxPage !== null) {
       if (page < maxPage) {
         setPage(page + 1);
-      }else{
-        return null
+      } else {
+        return null;
       }
     }
   }
@@ -84,7 +97,8 @@ export function TableData() {
                 </TableCell>
                 <TableCell>
                   <div className="flex gap-2">
-                    <Pencil /> / <Trash2 />
+                    <Pencil /> /{" "}
+                    <DeleteButton id={purchaseData.id} page={page} />
                   </div>
                 </TableCell>
               </TableRow>
@@ -105,7 +119,10 @@ export function TableData() {
               <PaginationLink>{page}</PaginationLink>
             </PaginationItem>
             <PaginationItem>
-              <PaginationNext onClick={handleNextPage} isActive={page < (maxPage ?? 0)} />
+              <PaginationNext
+                onClick={handleNextPage}
+                isActive={page < (maxPage ?? 0)}
+              />
             </PaginationItem>
           </PaginationContent>
         </Pagination>

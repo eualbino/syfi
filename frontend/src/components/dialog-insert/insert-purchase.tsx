@@ -12,10 +12,11 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { usePurchase } from "@/data/purchase-data";
+import { purchasePost } from "@/data/purchase-data";
 import { zodResolver } from "@hookform/resolvers/zod";
 import z from "zod";
 import { useForm } from "react-hook-form";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const formInserirSchema = z.object({
   name: z
@@ -30,13 +31,20 @@ const formInserirSchema = z.object({
 
 type FormInserirSchema = z.infer<typeof formInserirSchema>;
 
-export function InsertPurchase() {
-  const { postPurchase } = usePurchase();
-
+export function InsertPurchase({ page }: { page: number }) {
   const { handleSubmit, register } = useForm<FormInserirSchema>({
     resolver: zodResolver(formInserirSchema),
     defaultValues: {
       name: "",
+    },
+  });
+
+  const queryClient = useQueryClient();
+
+  const { mutateAsync: postPurchase } = useMutation({
+    mutationFn: purchasePost,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["purchase", page] });
     },
   });
 

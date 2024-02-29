@@ -45,11 +45,13 @@ app.get("/listbuys", async (req, res) => {
 
 app.delete("/listbuy/:id", async (req, res) => {
   const { id } = req.params;
-  const post = await prisma.listBuy.delete({
-    where: {
-      id: Number(id),
-    },
-  });
+  const listBuy = await prisma.listBuy.findUnique({ where: { id: Number(id) } });
+  
+  if (!listBuy) {
+    return res.status(404).json({ error: "Record not found" });
+  }
+  
+  const post = await prisma.listBuy.delete({ where: { id: Number(id)} });
   res.json(post);
 });
 

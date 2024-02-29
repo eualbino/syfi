@@ -1,3 +1,4 @@
+"use client";
 import * as React from "react";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
@@ -6,7 +7,7 @@ import { InsertPurchase } from "@/components/dialog-insert/insert-purchase";
 import { TableData } from "@/components/table-data/table-data";
 
 export default function HomePage() {
-  
+  const [page, setPage] = React.useState(1);
   return (
     <div>
       <SetTheme />
@@ -21,10 +22,10 @@ export default function HomePage() {
               />
             </div>
             <div>
-              <InsertPurchase />
+              <InsertPurchase page={page} />
             </div>
           </div>
-          <TableData/>
+          <TableData page={page} setPage={setPage} />
         </div>
       </div>
     </div>
