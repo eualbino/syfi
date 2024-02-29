@@ -39,6 +39,7 @@ export function usePurchase(page?: number){
     queryFn: () => page ? purchaseGet(page) : null,
     refetchOnWindowFocus: true,
     placeholderData: keepPreviousData,
+    staleTime: 50000
   })
 
   const {mutateAsync: postPurchase} = useMutation({

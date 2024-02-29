@@ -21,7 +21,7 @@ import {
 } from "../ui/pagination";
 
 export function TableData() {
-  const [page, setPage] = useState(1);
+ const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState<number | null>(null);
   const { getPurchase } = usePurchase(page);
   const total = getPurchase?.totalItems;
@@ -105,7 +105,7 @@ export function TableData() {
               <PaginationLink>{page}</PaginationLink>
             </PaginationItem>
             <PaginationItem>
-              <PaginationNext onClick={handleNextPage} />
+              <PaginationNext onClick={handleNextPage} isActive={page < (maxPage ?? 0)} />
             </PaginationItem>
           </PaginationContent>
         </Pagination>
