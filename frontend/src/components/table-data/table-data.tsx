@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Check, Pencil, X } from "lucide-react";
+import { Pencil, X } from "lucide-react";
 import {
   Pagination,
   PaginationContent,
@@ -20,7 +20,10 @@ import {
 } from "../ui/pagination";
 import { DeleteButton } from "../buttons/deleteButton";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { CompradoButton } from "../buttons/compradoButton";
+
+
 
 export function TableData({
   page,
@@ -35,6 +38,7 @@ export function TableData({
     queryKey: ["purchase", page],
     queryFn: () => purchaseGet(page),
     refetchOnWindowFocus: false,
+    placeholderData: keepPreviousData
   });
 
   const total = getPurchase?.totalItems;
@@ -87,12 +91,12 @@ export function TableData({
                 <TableCell className="pl-5">
                   <Checkbox />
                 </TableCell>
-                <TableCell className="max-w-60 overflow-hidden overflow-ellipsis whitespace-nowrap">
+                <TableCell className={`max-w-60 overflow-hidden overflow-ellipsis whitespace-nowrap ${purchaseData.comprado === true ? "line-through text-zinc-400" : null}`}>
                   {purchaseData.name}
                 </TableCell>
                 <TableCell>
                   <div className="flex gap-2">
-                    <Check /> / <X />
+                    <CompradoButton id={purchaseData.id} page={page} /> / <X />
                   </div>
                 </TableCell>
                 <TableCell>

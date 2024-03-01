@@ -66,7 +66,8 @@ app.post("/listbuy", async (req, res) => {
 });
 
 app.put("/listbuy/:id", async (req, res) => {
-  const { id, comprado } = req.body;
+  const { comprado } = req.body;
+  const { id } = req.params;
   try {
     const post = await prisma.listBuy.update({
       where: { id: Number(id) },
@@ -80,7 +81,6 @@ app.put("/listbuy/:id", async (req, res) => {
     res.json({ error: `Post with ID ${id} does not exist in the database` });
   }
 });
-
 const server = app.listen(8080, () =>
   console.log(`
 🚀 Server ready at: http://localhost:8080

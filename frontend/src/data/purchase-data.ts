@@ -8,6 +8,10 @@ interface GetPurchaseData {
   created_At: string;
 }
 
+interface PutPurchase{
+  comprado: boolean
+}
+
 interface PostPurchaseData {
   name: string;
 }
@@ -30,6 +34,10 @@ export async function purchaseGet(page: number) {
 
 export async function purchasePost(data: PostPurchaseData) {
   await api.post("/listbuy", data);
+}
+
+export async function purchasePut(id: number, data: PutPurchase){
+  await api.put(`/listbuy/${id}`, data)
 }
 
 export async function purchaseDelete(id: number) {
