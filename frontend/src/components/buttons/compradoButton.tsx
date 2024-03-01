@@ -2,7 +2,7 @@ import { purchasePut } from "@/data/purchase-data";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Check } from "lucide-react";
 
-export function CompradoButton({ id, page }: { id: number; page: number }) {
+export function CompradoButton({ id, page, comprado }: { id: number; page: number, comprado: boolean }) {
   const queryClient = useQueryClient();
 
   const { mutateAsync: purchaseItem } = useMutation({
@@ -17,7 +17,7 @@ export function CompradoButton({ id, page }: { id: number; page: number }) {
   }
 
   return(
-    <button type="submit" onClick={handlePurchaseItem}>
+    <button type="submit" onClick={handlePurchaseItem} disabled={comprado === true} className={`${comprado ? "text-zinc-400" : "text-green-400"}`}> 
       <Check/>
     </button>
   )

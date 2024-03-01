@@ -22,6 +22,7 @@ import { DeleteButton } from "../buttons/deleteButton";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { CompradoButton } from "../buttons/compradoButton";
+import { NotCompradoButton } from "../buttons/notCompradoButton";
 
 
 
@@ -96,7 +97,7 @@ export function TableData({
                 </TableCell>
                 <TableCell>
                   <div className="flex gap-2">
-                    <CompradoButton id={purchaseData.id} page={page} /> / <X />
+                    <CompradoButton id={purchaseData.id} page={page} comprado={purchaseData.comprado} /> / <NotCompradoButton id={purchaseData.id} page={page} comprado={purchaseData.comprado} />
                   </div>
                 </TableCell>
                 <TableCell>
