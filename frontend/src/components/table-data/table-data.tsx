@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Pencil, X } from "lucide-react";
+import { Pencil } from "lucide-react";
 import {
   Pagination,
   PaginationContent,
@@ -23,23 +23,23 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { CompradoButton } from "../buttons/compradoButton";
 import { NotCompradoButton } from "../buttons/notCompradoButton";
-
-
+import { EditButton } from "../buttons/editButton";
 
 export function TableData({
   page,
   setPage,
+  q,
 }: {
   page: number;
   setPage: Dispatch<SetStateAction<number>>;
+  q: string;
 }) {
   const [maxPage, setMaxPage] = useState<number | null>(null);
-
   const { data: getPurchase } = useQuery({
-    queryKey: ["purchase", page],
-    queryFn: () => purchaseGet(page),
+    queryKey: ["purchase", page, q],
+    queryFn: () => purchaseGet(page, q),
     refetchOnWindowFocus: false,
-    placeholderData: keepPreviousData
+    placeholderData: keepPreviousData,
   });
 
   const total = getPurchase?.totalItems;
@@ -92,18 +92,36 @@ export function TableData({
                 <TableCell className="pl-5">
                   <Checkbox />
                 </TableCell>
-                <TableCell className={`max-w-60 overflow-hidden overflow-ellipsis whitespace-nowrap ${purchaseData.comprado === true ? "line-through text-zinc-400" : null}`}>
+                <TableCell
+                  className={`max-w-60 overflow-hidden overflow-ellipsis whitespace-nowrap ${
+                    purchaseData.comprado === true
+                      ? "line-through text-zinc-400"
+                      : null
+                  }`}
+                >
                   {purchaseData.name}
                 </TableCell>
                 <TableCell>
                   <div className="flex gap-2">
-                    <CompradoButton id={purchaseData.id} page={page} comprado={purchaseData.comprado} /> / <NotCompradoButton id={purchaseData.id} page={page} comprado={purchaseData.comprado} />
+                    <CompradoButton
+                      id={purchaseData.id}
+                      page={page}
+                      comprado={purchaseData.comprado}
+                      q={q}
+                    />{" "}
+                    /{" "}
+                    <NotCompradoButton
+                      id={purchaseData.id}
+                      page={page}
+                      comprado={purchaseData.comprado}
+                      q={q}
+                    />
                   </div>
                 </TableCell>
                 <TableCell>
                   <div className="flex gap-2">
-                    <Pencil /> /{" "}
-                    <DeleteButton id={purchaseData.id} page={page} />
+                    <EditButton id={purchaseData.id} page={page} q={q} /> /{" "}
+                    <DeleteButton id={purchaseData.id} page={page} q={q} />
                   </div>
                 </TableCell>
               </TableRow>

@@ -2,13 +2,13 @@ import { purchaseDelete } from "@/data/purchase-data";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Trash2 } from "lucide-react";
 
-export function DeleteButton({ id, page }: { id: number; page: number }) {
+export function DeleteButton({ id, page, q }: { id: number; page: number; q: string }) {
   const queryClient = useQueryClient();
 
   const { mutateAsync: deletePurchase } = useMutation({
     mutationFn: purchaseDelete,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["purchase", page] });
+      queryClient.invalidateQueries({ queryKey: ["purchase", page, q] });
     },
   });
 

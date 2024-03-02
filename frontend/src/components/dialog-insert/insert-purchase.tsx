@@ -31,7 +31,7 @@ const formInserirSchema = z.object({
 
 type FormInserirSchema = z.infer<typeof formInserirSchema>;
 
-export function InsertPurchase({ page }: { page: number }) {
+export function InsertPurchase({ page, q }: { page: number, q: string }) {
   const { handleSubmit, register } = useForm<FormInserirSchema>({
     resolver: zodResolver(formInserirSchema),
     defaultValues: {
@@ -44,7 +44,7 @@ export function InsertPurchase({ page }: { page: number }) {
   const { mutateAsync: postPurchase } = useMutation({
     mutationFn: purchasePost,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["purchase", page] });
+      queryClient.invalidateQueries({ queryKey: ["purchase", page, q] });
     },
   });
 

@@ -8,8 +8,12 @@ interface GetPurchaseData {
   created_At: string;
 }
 
-interface PutPurchase{
-  comprado: boolean
+interface PutPurchaseComprado {
+  comprado: boolean;
+}
+
+interface PutPurchaseName {
+  name: string;
 }
 
 interface PostPurchaseData {
@@ -21,10 +25,11 @@ interface ResponseData {
   totalItems: number;
 }
 
-export async function purchaseGet(page: number) {
+export async function purchaseGet(page: number, q?: string) {
   const response = await api.get<ResponseData>("/listbuys", {
     params: {
       page: page,
+      q: q,
     },
   });
   const listBuy = response.data.listBuy;
@@ -36,8 +41,15 @@ export async function purchasePost(data: PostPurchaseData) {
   await api.post("/listbuy", data);
 }
 
-export async function purchasePut(id: number, data: PutPurchase){
-  await api.put(`/listbuy/${id}`, data)
+export async function purchasePutName(id: number, name: PutPurchaseName) {
+  await api.put(`/listbuy/name/${id}`, name);
+}
+
+export async function purchasePutComprado(
+  id: number,
+  comprado: PutPurchaseComprado
+) {
+  await api.put(`/listbuy/comprado/${id}`, comprado);
 }
 
 export async function purchaseDelete(id: number) {

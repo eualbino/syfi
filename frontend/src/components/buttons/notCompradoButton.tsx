@@ -1,14 +1,14 @@
-import { purchasePut } from "@/data/purchase-data";
+import { purchasePutComprado } from "@/data/purchase-data";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Check, X } from "lucide-react";
 
-export function NotCompradoButton({ id, page, comprado }: { id: number; page: number, comprado: boolean }) {
+export function NotCompradoButton({ id, page, comprado, q }: { id: number; page: number, comprado: boolean, q: string }) {
   const queryClient = useQueryClient();
 
   const { mutateAsync: notPurchaseItem } = useMutation({
-    mutationFn: () => purchasePut(id, {comprado: false}),
+    mutationFn: () => purchasePutComprado(id, {comprado: false}),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["purchase", page] });
+      queryClient.invalidateQueries({ queryKey: ["purchase", page, q] });
     },
   });
 
