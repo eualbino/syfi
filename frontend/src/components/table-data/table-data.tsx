@@ -1,5 +1,5 @@
 "use client";
-import { purchaseGet } from "@/data/purchase-data";
+import { purchaseDelete, purchaseGet } from "@/data/purchase-data";
 import { Checkbox } from "../ui/checkbox";
 import {
   Table,
@@ -9,7 +9,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Pencil } from "lucide-react";
 import {
   Pagination,
   PaginationContent,
@@ -20,7 +19,12 @@ import {
 } from "../ui/pagination";
 import { DeleteButton } from "../buttons/deleteButton";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { CompradoButton } from "../buttons/compradoButton";
 import { NotCompradoButton } from "../buttons/notCompradoButton";
 import { EditButton } from "../buttons/editButton";
@@ -34,7 +38,11 @@ export function TableData({
   setPage: Dispatch<SetStateAction<number>>;
   q: string;
 }) {
+  
   const [maxPage, setMaxPage] = useState<number | null>(null);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [isAllSelected, setIsAllSelected] = useState<boolean>(false);
+
   const { data: getPurchase } = useQuery({
     queryKey: ["purchase", page, q],
     queryFn: () => purchaseGet(page, q),
@@ -69,13 +77,32 @@ export function TableData({
     }
   }
 
+  const handleSelectAll = () => {
+    if (isAllSelected) {
+      setSelectedIds([]);
+    } else {
+      setSelectedIds(
+        getPurchase?.listBuy?.map((purchaseData) => purchaseData.id) || []
+      );
+    }
+    setIsAllSelected(!isAllSelected);
+  };
+
+  const handleSelectRow = (id: number) => {
+    if (selectedIds.includes(id)) {
+      setSelectedIds(selectedIds.filter((selectedId) => selectedId !== id));
+    } else {
+      setSelectedIds([...selectedIds, id]);
+    }
+  };
+
   return (
     <div>
       <Table>
         <TableHeader>
           <TableRow className="text-zinc-500 hover:bg-zinc-200 dark:hover:bg-zinc-800">
             <TableHead className="pl-5">
-              <Checkbox />
+              <Checkbox checked={isAllSelected} onCheckedChange={handleSelectAll} />
             </TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Status</TableHead>
@@ -90,7 +117,12 @@ export function TableData({
                 key={purchaseData.id}
               >
                 <TableCell className="pl-5">
-                  <Checkbox />
+                  <Checkbox
+                    checked={selectedIds.includes(purchaseData.id)}
+                    onCheckedChange={() => {
+                      handleSelectRow(purchaseData.id);
+                    }}
+                  />
                 </TableCell>
                 <TableCell
                   className={`max-w-60 overflow-hidden overflow-ellipsis whitespace-nowrap ${
@@ -120,8 +152,13 @@ export function TableData({
                 </TableCell>
                 <TableCell>
                   <div className="flex gap-2">
-                    <EditButton id={purchaseData.id} page={page} q={q} /> /{" "}
-                    <DeleteButton id={purchaseData.id} page={page} q={q} />
+                    <EditButton
+                      id={purchaseData.id}
+                      page={page}
+                      q={q}
+                      placeholderName={purchaseData.name}
+                    />{" "}
+                    / <DeleteButton id={purchaseData.id} page={page} q={q} selectedIds={selectedIds} setSelectedIds={setSelectedIds} setIsAllSelected={setIsAllSelected}/>
                   </div>
                 </TableCell>
               </TableRow>

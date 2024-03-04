@@ -27,10 +27,12 @@ export function EditButton({
   id,
   page,
   q,
+  placeholderName,
 }: {
   page: number;
   id: number;
   q: string;
+  placeholderName: string;
 }) {
   const queryClient = useQueryClient();
   const { handleSubmit, register } = useForm<SchemaPutName>({
@@ -72,6 +74,7 @@ export function EditButton({
               <Input
                 id="name"
                 className="col-span-3 border-2 border-black dark:border-none dark:bg-zinc-800"
+                placeholder={placeholderName}
                 {...register("name")}
               />
             </div>
