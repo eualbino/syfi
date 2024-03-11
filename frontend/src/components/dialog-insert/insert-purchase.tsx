@@ -57,12 +57,12 @@ export function InsertPurchase({ page, q }: { page: number, q: string }) {
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="bg-black text-white dark:bg-white dark:text-black"
+          className="bg-black text-white dark:bg-white dark:text-black xs:mr-1"
         >
           Inserir
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="xs2:w-[90%]">
         <form onSubmit={handleSubmit(handleInserirPurchase)}>
           <DialogHeader>
             <DialogTitle>Inserir o produto</DialogTitle>

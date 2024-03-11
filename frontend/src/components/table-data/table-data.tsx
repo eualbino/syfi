@@ -18,7 +18,7 @@ import {
   PaginationPrevious,
 } from "../ui/pagination";
 import { DeleteButton } from "../buttons/deleteButton";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
 import {
   keepPreviousData,
   useMutation,
@@ -151,7 +151,7 @@ export function TableData({
                   </div>
                 </TableCell>
                 <TableCell>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 pl-2">
                     <EditButton
                       id={purchaseData.id}
                       page={page}
@@ -166,7 +166,7 @@ export function TableData({
           })}
         </TableBody>
       </Table>
-      <div className="mt-4">
+      <div className="mt-3 xs:mr-2">
         <Pagination>
           <PaginationContent>
             <PaginationItem>
