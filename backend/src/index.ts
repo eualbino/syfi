@@ -1,103 +1,27 @@
-import { Prisma, PrismaClient } from "@prisma/client";
 import express from "express";
+import { createItemListBuy } from "./http/routes/create-item";
+import { putNameItem, putStatusItem } from "./http/routes/put-endpoints";
+import { getItemsPagination } from "./http/routes/get-items";
+import { deleteItem } from "./http/routes/delete-item";
 
-const prisma = new PrismaClient();
 const app = express();
-const cors = require('cors')
+const cors = require("cors");
 
-app.use(cors({
-  origin: 'http://localhost:3000'
-}))
-app.use(express.json());
-
-app.get("/listbuys", async (req, res) => {
-  const page = Number(req.query.page) || 1;
-  const pageSize = 10;
-  const skip = (page - 1) * pageSize;
-  const take = pageSize;
-  const q  = typeof req.query.q === 'string' ? req.query.q : undefined
-
-  try {
-    const listBuy = q 
-      ? await prisma.listBuy.findMany({
-          where: {
-            name: {
-              contains: q,
-            },
-          },
-        })
-      : await prisma.listBuy.findMany({
-          skip: skip,
-          take: take,
-        });
-
-    const totalItems = await prisma.listBuy.count()
-
-    res.json({listBuy, totalItems});
-  } catch (error) {
-    res.status(500).json({ error: "An error occurred while retrieving data" });
-  }
-});
-
-app.delete("/listbuy/:id", async (req, res) => {
-  const { id } = req.params;
-  const listBuy = await prisma.listBuy.findUnique({ where: { id: Number(id) } });
-  
-  if (!listBuy) {
-    return res.status(404).json({ error: "Record not found" });
-  }
-  
-  const post = await prisma.listBuy.delete({ where: { id: Number(id)} });
-  res.json(post);
-});
-
-app.post("/listbuy", async (req, res) => {
-  const { name } = req.body;
-  const result = await prisma.listBuy.create({
-    data: {
-      name,
-    },
-  });
-  res.json(result);
-});
-
-app.put("/listbuy/comprado/:id", async (req, res) => {
-  const { comprado } = req.body;
-  const { id } = req.params;
-  try {
-    const post = await prisma.listBuy.update({
-      where: { id: Number(id) },
-      data: {
-        comprado,
-      },
-    });
-
-    res.json(post);
-  } catch (error) {
-    res.json({ error: `Post with ID ${id} does not exist in the database` });
-  }
-});
-
-app.put("/listbuy/name/:id", async (req, res) => {
-  const { name } = req.body;
-  const { id } = req.params;
-  try{
-    const post = await prisma.listBuy.update({
-      where: { id: Number(id) },
-      data: {
-        name,
-      }
-    })
-    res.json(post)
-  } catch (error) {
-    res.json({ error: `Post with ID ${id} does not exist in the database` })
-  }
-})
-
-const server = app.listen(8080, () =>
-  console.log(`
-🚀 Server ready at: http://localhost:8080
-⭐️ See sample requests: http://pris.ly/e/ts/rest-express#3-using-the-rest-api`)
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+  })
 );
 
+app.use(express.json());
 
+app.get("/listbuys", getItemsPagination)
+app.post("/listbuy", createItemListBuy);
+app.put("/listbuy/comprado/:id", putStatusItem)
+app.put("/listbuy/name/:id", putNameItem)
+app.delete("/listbuy/:id", deleteItem)
+
+app.listen(8080, () =>
+  console.log(`
+🚀 Server ready at: http://localhost:8080`)
+);
