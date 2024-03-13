@@ -1,4 +1,5 @@
 node_modules/
 dist/
 *.env*
-*dev.db
+env.ts
+*dev.db*
