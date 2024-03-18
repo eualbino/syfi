@@ -13,6 +13,7 @@ model User {
   username      String        @unique
   password      String
   refresh_token RefreshToken?
+  listBuys      ListBuy[]
 }
 
 model ListBuy {
@@ -20,6 +21,8 @@ model ListBuy {
   name      String
   comprado  Boolean  @default(false)
   createdAt DateTime @default(now())
+  userId String
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 model RefreshToken {

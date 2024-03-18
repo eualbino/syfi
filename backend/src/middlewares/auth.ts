@@ -23,7 +23,8 @@ export function AuthMiddlewares(
   const secret = process.env.JWT_SECRET;
 
   try {
-    verify(token, secret);
+    const decoded = verify(token, secret) as { userId: string; };
+    req.userId = decoded.userId;
     return next();
   } catch (error) {
     return res.status(404).json({ error: "Token not provided" });

@@ -1,5 +1,9 @@
-import type { Request, Response } from "express";
+import type { Request as ExpressRequest, Response } from "express";
 import { prisma } from "../../lib/prisma";
+
+interface Request extends ExpressRequest {
+  userId?: string;
+}
 
 export async function getItemsPagination(req: Request, res: Response) {
   const page = Number(req.query.page) || 1;
@@ -8,21 +12,37 @@ export async function getItemsPagination(req: Request, res: Response) {
   const take = pageSize;
   const q = typeof req.query.q === "string" ? req.query.q : undefined;
 
+  const userId = req.userId;
+
   try {
     const listBuy = q
       ? await prisma.listBuy.findMany({
           where: {
-            name: {
-              contains: q,
-            },
+            AND: [
+              {
+                name: {
+                  contains: q,
+                },
+              },
+              {
+                userId: userId,
+              },
+            ],
           },
         })
       : await prisma.listBuy.findMany({
+          where: {
+            userId: userId,
+          },
           skip: skip,
           take: take,
         });
 
-    const totalItems = await prisma.listBuy.count();
+    const totalItems = await prisma.listBuy.count({
+      where: {
+        userId: userId,
+      },
+    });
 
     res.json({ listBuy, totalItems });
   } catch (error) {

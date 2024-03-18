@@ -19,11 +19,13 @@ export async function loginUser(req: Request, res: Response) {
   if (!validPassword) {
     return res.status(400).json({ error: "Invalid username or password" });
   }
+
   if (!process.env.JWT_SECRET) {
     return res.json("error: não foi encontrado a cahve secreta JWT");
   }
+  
   const secret = process.env.JWT_SECRET
-  const token = sign({}, secret, {
+  const token = sign({ userId: user.id }, secret, {
     expiresIn: "1h",
   });
   const refreshToken = await generateRefreshToken(user.id)

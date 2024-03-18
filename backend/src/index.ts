@@ -28,7 +28,7 @@ app.post("/register", createUser);
 app.post("/refresh", refreshToken)
 app.put("/listbuy/comprado/:id", AuthMiddlewares, putStatusItem);
 app.put("/listbuy/name/:id", AuthMiddlewares, putNameItem);
-app.delete("/listbuy/:id", AuthMiddlewares, deleteItem);
+app.delete("/listbuy/:id", deleteItem);
 
 app.listen(8080, () =>
   console.log(`
