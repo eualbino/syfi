@@ -26,7 +26,9 @@ interface ResponseData {
 }
 
 export async function purchaseGet(page: number, q?: string) {
+  const token = localStorage.getItem("authToken");
   const response = await api.get<ResponseData>("/listbuys", {
+    headers: { Authorization: `Bearer ${token}` },
     params: {
       page: page,
       q: q,
@@ -38,18 +40,27 @@ export async function purchaseGet(page: number, q?: string) {
 }
 
 export async function purchasePost(data: PostPurchaseData) {
-  await api.post("/listbuy", data);
+  const token = localStorage.getItem("authToken");
+  await api.post("/listbuy", data, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 }
 
 export async function purchasePutName(id: number, name: PutPurchaseName) {
-  await api.put(`/listbuy/name/${id}`, name);
+  const token = localStorage.getItem("authToken");
+  await api.put(`/listbuy/name/${id}`, name, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 }
 
 export async function purchasePutComprado(
   id: number,
   comprado: PutPurchaseComprado
 ) {
-  await api.put(`/listbuy/comprado/${id}`, comprado);
+  const token = localStorage.getItem("authToken");
+  await api.put(`/listbuy/comprado/${id}`, comprado, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 }
 
 export async function purchaseDelete(id: number) {

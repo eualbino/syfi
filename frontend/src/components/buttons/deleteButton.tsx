@@ -1,7 +1,7 @@
 import { purchaseDelete } from "@/data/purchase-data";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Trash2 } from "lucide-react";
-import { Dispatch, SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from "react";
 
 export function DeleteButton({
   id,

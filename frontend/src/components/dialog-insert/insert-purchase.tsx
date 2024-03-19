@@ -79,6 +79,7 @@ export function InsertPurchase({ page, q }: { page: number, q: string }) {
                 id="name"
                 className="col-span-3 border-2 border-black dark:border-none dark:bg-zinc-800"
                 {...register("name")}
+                autoComplete="off"
               />
             </div>
           </div>

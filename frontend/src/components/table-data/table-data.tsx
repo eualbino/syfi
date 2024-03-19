@@ -19,12 +19,7 @@ import {
 } from "../ui/pagination";
 import { DeleteButton } from "../buttons/deleteButton";
 import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
-import {
-  keepPreviousData,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { CompradoButton } from "../buttons/compradoButton";
 import { NotCompradoButton } from "../buttons/notCompradoButton";
 import { EditButton } from "../buttons/editButton";
@@ -38,7 +33,6 @@ export function TableData({
   setPage: Dispatch<SetStateAction<number>>;
   q: string;
 }) {
-  
   const [maxPage, setMaxPage] = useState<number | null>(null);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [isAllSelected, setIsAllSelected] = useState<boolean>(false);
@@ -102,7 +96,10 @@ export function TableData({
         <TableHeader>
           <TableRow className="text-zinc-500 hover:bg-zinc-200 dark:hover:bg-zinc-800">
             <TableHead className="pl-5">
-              <Checkbox checked={isAllSelected} onCheckedChange={handleSelectAll} />
+              <Checkbox
+                checked={isAllSelected}
+                onCheckedChange={handleSelectAll}
+              />
             </TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Status</TableHead>
@@ -158,7 +155,15 @@ export function TableData({
                       q={q}
                       placeholderName={purchaseData.name}
                     />{" "}
-                    / <DeleteButton id={purchaseData.id} page={page} q={q} selectedIds={selectedIds} setSelectedIds={setSelectedIds} setIsAllSelected={setIsAllSelected}/>
+                    /{" "}
+                    <DeleteButton
+                      id={purchaseData.id}
+                      page={page}
+                      q={q}
+                      selectedIds={selectedIds}
+                      setSelectedIds={setSelectedIds}
+                      setIsAllSelected={setIsAllSelected}
+                    />
                   </div>
                 </TableCell>
               </TableRow>
