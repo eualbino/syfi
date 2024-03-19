@@ -1,5 +1,5 @@
 import { api } from "@/lib/api";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -50,10 +50,11 @@ export function UseRegisterUser() {
       }
     }
   }
-
+  const queryClient = useQueryClient()
   async function sigout() {
     localStorage.removeItem("authToken");
 		axios.defaults.headers.common.Authorization = undefined;
+    queryClient.clear()
   }
 
   async function registerPost(data: PostRegisterUser) {
