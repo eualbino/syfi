@@ -9,15 +9,19 @@ export async function refreshToken(req: Request, res: Response) {
       id: refresh_token,
     },
   });
+
   if (!refreshToken) {
     throw new Error("Refresh token invalid");
   }
+
+  const { userId } = refreshToken;
+
   if (!process.env.JWT_SECRET) {
     return res.json("error: não foi encontrado a cahve secreta JWT");
   }
   const secret_refresh = process.env.JWT_SECRET;
 
-  const token = sign({}, secret_refresh, { expiresIn: "7d" });
+  const token = sign({ userId: userId }, secret_refresh, { expiresIn: "7d" });
 
   return res.json(token);
 }
