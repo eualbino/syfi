@@ -50,11 +50,12 @@ export function UseRegisterUser() {
       }
     }
   }
-  const queryClient = useQueryClient()
+
+  const queryClient = useQueryClient();
   async function sigout() {
     localStorage.removeItem("authToken");
-		axios.defaults.headers.common.Authorization = undefined;
-    queryClient.clear()
+    axios.defaults.headers.common.Authorization = undefined;
+    queryClient.clear();
   }
 
   async function registerPost(data: PostRegisterUser) {
@@ -78,9 +79,23 @@ export function UseRegisterUser() {
   const { mutateAsync: sigoutUser } = useMutation({
     mutationFn: sigout,
     onSuccess: () => {
-      route.push("/")
-    }
-  })
+      route.push("/");
+    },
+  });
 
   return { postRegister, errorMensage, signin, sigoutUser };
+}
+
+export async function refreshToken() {
+  try {
+    const response = await api.post("/refresh", {
+      refresh_token: localStorage.getItem("refreshIdToken"),
+    });
+    if (response.data) {
+      localStorage.setItem("authToken", response.data);
+      axios.defaults.headers.common.Authorization = `Bearer ${response.data}`;
+    }
+  } catch (error) {
+    console.error("Failed to refresh token", error);
+  }
 }

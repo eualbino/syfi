@@ -26,43 +26,63 @@ interface ResponseData {
 }
 
 export async function purchaseGet(page: number, q?: string) {
-  const token = localStorage.getItem("authToken");
-  const response = await api.get<ResponseData>("/listbuys", {
-    headers: { Authorization: `Bearer ${token}` },
-    params: {
-      page: page,
-      q: q,
-    },
-  });
-  const listBuy = response.data.listBuy;
-  const totalItems = response.data.totalItems;
-  return { listBuy, totalItems };
+  try {
+    const token = localStorage.getItem("authToken");
+    const response = await api.get<ResponseData>("/listbuys", {
+      headers: { Authorization: `Bearer ${token}` },
+      params: {
+        page: page,
+        q: q,
+      },
+    });
+    const listBuy = response.data.listBuy;
+    const totalItems = response.data.totalItems;
+    return { listBuy, totalItems };
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 export async function purchasePost(data: PostPurchaseData) {
-  const token = localStorage.getItem("authToken");
-  await api.post("/listbuy", data, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  try {
+    const token = localStorage.getItem("authToken");
+    await api.post("/listbuy", data, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 export async function purchasePutName(id: number, name: PutPurchaseName) {
-  const token = localStorage.getItem("authToken");
-  await api.put(`/listbuy/name/${id}`, name, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  try {
+    const token = localStorage.getItem("authToken");
+    await api.put(`/listbuy/name/${id}`, name, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 export async function purchasePutComprado(
   id: number,
   comprado: PutPurchaseComprado
 ) {
-  const token = localStorage.getItem("authToken");
-  await api.put(`/listbuy/comprado/${id}`, comprado, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  try {
+    const token = localStorage.getItem("authToken");
+    await api.put(`/listbuy/comprado/${id}`, comprado, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 export async function purchaseDelete(id: number) {
-  await api.delete(`/listbuy/${id}`);
+  try {
+    await api.delete(`/listbuy/${id}`);
+  } catch (error) {
+    console.error(error);
+  }
 }
