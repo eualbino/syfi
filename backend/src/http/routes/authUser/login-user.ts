@@ -26,7 +26,7 @@ export async function loginUser(req: Request, res: Response) {
   
   const secret = process.env.JWT_SECRET
   const token = sign({ userId: user.id }, secret, {
-    expiresIn: "1h",
+    expiresIn: "1m",
   });
   const refreshToken = await generateRefreshToken(user.id)
   res.json({ token, refreshToken });

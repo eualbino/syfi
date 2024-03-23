@@ -27,6 +27,6 @@ export function AuthMiddlewares(
     req.userId = decoded.userId;
     return next();
   } catch (error) {
-    return res.status(404).json({ error: "Token not provided" });
+    return res.status(401).json({ error: "Token not provided" });
   }
 }
