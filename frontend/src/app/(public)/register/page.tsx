@@ -53,7 +53,7 @@ export default function Register() {
 
   return (
     <div className="bg-zinc-200 flex items-center justify-center w-screen h-screen">
-      <div className="bg-white flex flex-col items-center w-full h-[45%] md:w-[40%] lg:w-[30%] xl:w-[20%] border-[3px] border-black rounded-2xl shadow-2xl ">
+      <div className="bg-white flex flex-col items-center h-auto border-[3px] border-black rounded-2xl shadow-2xl min-w-[18vw] px-8">
         <div className="text-3xl font-semibold pt-10">
           <p>Register</p>
         </div>
@@ -90,7 +90,7 @@ export default function Register() {
               Login
             </Link>
           </div>
-          <div className="flex justify-center">
+          <div className="flex justify-center mb-8">
             <button
               type="submit"
               className="border-2 border-black hover:bg-zinc-100 duration-200 px-6 py-1 rounded-lg mt-6 font-semibold"
