@@ -8,6 +8,9 @@ import { loginUser } from "./http/routes/authUser/login-user";
 import { createUser } from "./http/routes/create-user";
 import { AuthMiddlewares } from "./middlewares/auth";
 import { refreshToken } from "./http/routes/authUser/refreshToken";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 
@@ -15,7 +18,7 @@ const cors = require("cors");
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: process.env.CORS,
   })
 );
 
@@ -25,12 +28,12 @@ app.get("/listbuys", AuthMiddlewares, getItemsPagination);
 app.post("/listbuy", AuthMiddlewares, createItemListBuy);
 app.post("/login", loginUser);
 app.post("/register", createUser);
-app.post("/refresh", refreshToken)
+app.post("/refresh", refreshToken);
 app.put("/listbuy/comprado/:id", AuthMiddlewares, putStatusItem);
 app.put("/listbuy/name/:id", AuthMiddlewares, putNameItem);
 app.delete("/listbuy/:id", deleteItem);
 
-app.listen(8080, () =>
+app.listen(process.env.PORT, () =>
   console.log(`
-🚀 Server ready at: http://localhost:8080`)
+🚀 Server running`)
 );
