@@ -17,14 +17,7 @@ export default function RootLayout({
   return (
     <html className={inter.className} lang="pt">
       <body>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
           <TanstackProvider>{children}</TanstackProvider>
-        </ThemeProvider>
       </body>
     </html>
   );
