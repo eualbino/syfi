@@ -27,7 +27,7 @@
   <li>Search products insets in your list.</li>
   <li>Insert products.</li>
 </ul>
-<p>Products</p>
+<p><li/>Products</p>
 <ul style="list-style-type:circle;">
   <li>Product status when purchased or not purchased</li>
   <li>Edit product name and delete product in list</li>
@@ -76,7 +76,6 @@ $ npm run dev
 
 ```shell
 $ cd frontend
-
 $ npm install
 ```
 
