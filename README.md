@@ -1,7 +1,7 @@
 <h1>SYFI</h1>
-<img src="../list_buy/frontend/public/login-image.png">
-<img src="../list_buy/frontend/public/register-image.png">
-<img src="../list_buy/frontend/public/list-buy-image.png">
+<img src="/frontend/public/login-image.png">
+<img src="/frontend/public/register-image.png">
+<img src="/frontend/public/list-buy-image.png">
 <br/>
 <br/>
 <h1>About this project</h1>
