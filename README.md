@@ -56,6 +56,7 @@ $ npm install
 DATABASE_URL="file:./dev.db"
 PORT=8080
 CORS=http://localhost:3000
+JWT_SECRET="your_secret_key"
 ```
 
 <strong>Generate migrations</strong>
